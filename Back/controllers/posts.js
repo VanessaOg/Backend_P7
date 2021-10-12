@@ -1,33 +1,34 @@
-const db = require("../config/database");
+const Post = require("../models/Post");
+const Sequelize = require("sequelize");
+const fs = require("fs");
 
-const Post = db.posts;
-const Op = db.Sequelize.Op;
+const Op = Sequelize.Op;
 
-// Create en save a new Post
-exports.create = (req, res) => {
+// Create and save a new Post
+exports.createPost = (req, res, next) => {
 	// Validate request
 	if (!req.body.title || !req.body.content) {
-		res.status(400).json({ msg: "Les champs doivent être remplis" });
+		return res.status(400).json({ msg: "Les champs doivent être remplis" });
 	}
-
+	// const postObject = JSON.parse(req.body.post);
 	// Create a Post
 	const post = {
 		title: req.body.title,
 		content: req.body.content,
-		attachement: req.body.attachement,
+		attachement: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
 	};
 
 	// Save Post in the database
 	Post.create(post)
-		.then((data) => {
-			res.send(data);
+		.then(() => {
+			res.status(201).json({ message: "Votre post a été créé" });
 			res.redirect("/posts");
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => res.status(400).json({ err }));
 };
 
 // Get all Posts from the database
-exports.findAll = (req, res) => {
+exports.findAllPosts = (req, res, next) => {
 	const title = req.body.title;
 	const content = req.body.content;
 	let condition = title
@@ -38,26 +39,24 @@ exports.findAll = (req, res) => {
 
 	Post.findAll({ where: condition })
 		.then((data) => {
-			res.send(data);
+			res.send(data).status(200).json({ message: "Tous les posts publiés" });
 		})
 		.catch((err) => {
-			res
-				.status(500)
-				.send({ message: err.message || "Une erreur s'est produite pendant la recherche" });
+			res.status(400).json({ err });
 		});
 };
 
 // Find a single Post with an id
-exports.findOne = (req, res) => {
+exports.findOnePost = (req, res, next) => {
 	const id = req.params.id;
 	// Find by Using primary key
 	Post.findByPk(id)
 		.then((data) => {
 			if (data) {
-				res.send(data);
+				res.send(data).status(200);
 			} else {
 				res.status(404).send({
-					message: `Impossible de trouver l'identidiant id=%{id}`,
+					message: `Impossible de trouver l'identidiant id=${id}`,
 				});
 			}
 		})
@@ -69,12 +68,18 @@ exports.findOne = (req, res) => {
 };
 
 // Delete a Post with the specified id in request
-exports.delete = (req, res) => {
-	const id = req.params.id;
-	Post.destroy({
-		where: { id: id },
-	})
-		.then(res.redirect("/posts"))
+exports.deletePost = (req, res) => {
+	Post.findOne({ where: { id: req.params.id } })
+		.then((post) => {
+			const filename = post.attachement.split("/images/")[1];
+			fs.unlink(`images/${filename}`, () => {
+				Post.destroy({ where: { id: req.params.id } })
+					.then(() => res.status(200).json({ message: "Post supprimé" }).redirect("/posts"))
+					.catch((err) => {
+						res.status(400).json({ err });
+					});
+			});
+		})
 		.catch((err) => {
 			res.status(500).send({ message: "Un problème est survenu lors de la supression" });
 		});

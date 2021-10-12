@@ -1,20 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/database");
-const Post = require("../models/Post");
 
 const postsCtrl = require("../controllers/posts");
+const auth = require("../middleware/auth");
+const multer = require("../middleware/multer-config");
 
 // Get post list
-router.get("/", postsCtrl.findAll);
+router.get("/", /*auth, multer,*/ postsCtrl.findAllPosts);
 
 // Add a post
-router.post("/", postsCtrl.create);
+router.post("/", /*auth,*/ postsCtrl.createPost);
 
 // Find a single Post with an id
-router.get("/:id", postsCtrl.findOne);
+router.get("/:id", /* auth, */ postsCtrl.findOnePost);
 
 // Delete a Post with the specified id in request
-router.delete("/:id", postsCtrl.delete);
+router.delete("/:id", /* auth,*/ postsCtrl.deletePost);
 
 module.exports = router;
