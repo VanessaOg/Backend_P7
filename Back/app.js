@@ -8,11 +8,24 @@ const postRoutes = require("./routes/posts");
 const userRoutes = require("./routes/users");
 
 // Database
-const db = require("./config/database");
+const sequelize = require("./config/database");
+
+// const db = require("./models");
+// db.sequelize.sync({ force: true }).then(() => {
+// 	console.log("Drop and Resync Db");
+// });
+
+const User = require("./models/User");
+const Post = require("./models/Post");
+
+User.hasMany(Post);
+Post.belongsTo(User);
 
 // Testing the connection
-db.authenticate()
+sequelize
+	.authenticate()
 	.then(() => console.log("Connection has been established successfully."))
+	// .then(() => sequelize.sync({ force: true }))
 	.catch((error) => console.error("Unable to connect to the database:", error));
 
 const app = express();

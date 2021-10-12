@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
-const db = require("../config/database");
+const sequelize = require("../config/database");
 
-const User = db.define("user", {
+const User = sequelize.define("user", {
 	firstName: {
 		type: DataTypes.STRING,
 		allowNull: false,
@@ -10,12 +10,12 @@ const User = db.define("user", {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	email: {
-		type: DataTypes.STRING,
-		allowNull: false,
-		unique: true,
-		isEmail: true,
-	},
+	// email: {
+	// 	type: DataTypes.STRING,
+	// 	allowNull: false,
+	// 	unique: true,
+	// 	isEmail: true,
+	// },
 	password: {
 		type: DataTypes.STRING,
 		allowNull: false,
@@ -24,11 +24,12 @@ const User = db.define("user", {
 		type: DataTypes.BOOLEAN,
 	},
 });
-User.associate = (models) => {
-	User.hasMany(models.Post, {
-		onDelete: "CASCADE",
-	});
-};
 
-User.sync({ force: true });
+// User.associate = (models) => {
+// 	User.hasMany(models.Post, {
+// 		onDelete: "CASCADE",
+// 	});
+// };
+
+// User.sync({ force: true });
 module.exports = User;

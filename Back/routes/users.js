@@ -1,4 +1,5 @@
 const express = require("express");
+const sequelize = require("sequelize");
 const router = express.Router();
 
 const usersCtrl = require("../controllers/users");

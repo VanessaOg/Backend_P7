@@ -1,11 +1,15 @@
 <template>
 	<div id="app">
-		<h1>Hello world</h1>
+		<header>
+			<img src="./assets/logo-header.png" id="logoconnect" alt="Logo Groupomania " />
+		</header>
 		<router-view />
 	</div>
 </template>
 
 <style>
+* {
+}
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
