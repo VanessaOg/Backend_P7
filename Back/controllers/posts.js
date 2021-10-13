@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const Sequelize = require("sequelize");
+
 const fs = require("fs");
 
 const Op = Sequelize.Op;
@@ -7,23 +8,20 @@ const Op = Sequelize.Op;
 // Create and save a new Post
 exports.createPost = (req, res, next) => {
 	// Validate request
-	if (!req.body.title || !req.body.content) {
-		return res.status(400).json({ msg: "Les champs doivent être remplis" });
-	}
-	// const postObject = JSON.parse(req.body.post);
+	// if (!req.body.title || !req.body.content) {
+	// 	return res.status(400).json({ msg: "Les champs doivent être remplis" });
+	// }
+
 	// Create a Post
 	const post = {
 		title: req.body.title,
 		content: req.body.content,
-		attachement: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+		// attachement: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
 	};
 
 	// Save Post in the database
 	Post.create(post)
-		.then(() => {
-			res.status(201).json({ message: "Votre post a été créé" });
-			res.redirect("/posts");
-		})
+		.then(() => res.status(201).json({ message: "Votre post a été créé", post }))
 		.catch((err) => res.status(400).json({ err }));
 };
 
@@ -71,14 +69,14 @@ exports.findOnePost = (req, res, next) => {
 exports.deletePost = (req, res) => {
 	Post.findOne({ where: { id: req.params.id } })
 		.then((post) => {
-			const filename = post.attachement.split("/images/")[1];
-			fs.unlink(`images/${filename}`, () => {
-				Post.destroy({ where: { id: req.params.id } })
-					.then(() => res.status(200).json({ message: "Post supprimé" }).redirect("/posts"))
-					.catch((err) => {
-						res.status(400).json({ err });
-					});
-			});
+			// const filename = post.attachement.split("/images/")[1];
+			// fs.unlink(`images/${filename}`, () => {
+			Post.destroy({ where: { id: req.params.id } })
+				.then(() => res.status(200).json({ message: "Post supprimé" }).redirect("/posts"))
+				.catch((err) => {
+					res.status(400).json({ err });
+				});
+			// });
 		})
 		.catch((err) => {
 			res.status(500).send({ message: "Un problème est survenu lors de la supression" });

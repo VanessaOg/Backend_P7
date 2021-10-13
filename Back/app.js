@@ -25,7 +25,7 @@ Post.belongsTo(User);
 sequelize
 	.authenticate()
 	.then(() => console.log("Connection has been established successfully."))
-	// .then(() => sequelize.sync({ force: true }))
+	.then(() => sequelize.sync({ force: true }))
 	.catch((error) => console.error("Unable to connect to the database:", error));
 
 const app = express();

@@ -5,11 +5,9 @@ const sequelize = require("../config/database");
 const Post = sequelize.define("post", {
 	title: {
 		type: DataTypes.STRING,
-		allowNull: false,
 	},
 	content: {
 		type: DataTypes.STRING,
-		allowNull: false,
 	},
 	attachement: {
 		type: DataTypes.STRING,
