@@ -2,19 +2,16 @@ const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = require("../config/database");
 
-const Post = sequelize.define("post", {
-	title: {
-		type: DataTypes.STRING,
-	},
+const Comment = sequelize.define("comment", {
 	content: {
 		type: DataTypes.STRING,
 	},
-	attachement: {
+	postId: {
 		type: DataTypes.STRING,
 	},
 	userId: {
-		type: DataTypes.TINYINT,
+		type: DataTypes.STRING,
 	},
 });
 
-module.exports = Post;
+module.exports = Comment;

@@ -17,9 +17,12 @@ const sequelize = require("./config/database");
 
 const User = require("./models/User");
 const Post = require("./models/Post");
+const Comment = require("./models/Comment");
 
 User.hasMany(Post);
 Post.belongsTo(User);
+Post.hasMany(Comment);
+Comment.belongsTo(Post);
 
 // Testing the connection
 sequelize
@@ -57,5 +60,6 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 // enregistrement des routers
 app.use("/api/posts", postRoutes);
 app.use("/api/auth", userRoutes);
+// app.use("/api/comments", commentRoutes);
 
 module.exports = app;

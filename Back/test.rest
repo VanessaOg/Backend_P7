@@ -1,8 +1,39 @@
-POST http://localhost:5000/api/posts
+POST http://localhost:5000/api/auth/signup
 Content-Type: application/json
 
 {
-    "title":"titre3",
-    "content":"contenu3",
-    "attachement":""
+    "email":"test1@gmail.com",
+    "password":"passTest1",
+    "firstName":"prenomtest",
+    "lastName":"nomtest"
 }
+
+###
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json 
+
+{
+    "email":"test1@gmail.com",
+    "password":"passTest1" 
+}
+
+###
+GET http://localhost:5000/api/posts
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTYzNDEzMDAwNCwiZXhwIjoxNjM0MjE2NDA0fQ.Yy3G9rC2cKqRmD-sGZBqrbcX9J11ZtidUI07S-Mo1A4
+
+###
+POST  http://localhost:5000/api/posts
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTYzNDEzMDAwNCwiZXhwIjoxNjM0MjE2NDA0fQ.Yy3G9rC2cKqRmD-sGZBqrbcX9J11ZtidUI07S-Mo1A4
+
+{
+    "title":"title2",
+    "content":"content2"
+}
+
+###
+GET http://localhost:5000/api/posts/1
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTYzNDEzMDAwNCwiZXhwIjoxNjM0MjE2NDA0fQ.Yy3G9rC2cKqRmD-sGZBqrbcX9J11ZtidUI07S-Mo1A4
+
