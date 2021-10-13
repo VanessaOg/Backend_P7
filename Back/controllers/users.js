@@ -40,7 +40,7 @@ exports.login = (req, res, next) => {
 						return res.status(401).json({ message: "Mot de passe incorrect" });
 					}
 					res.status(200).json({
-						userId: user._id,
+						userId: user.id,
 						token: jwt.sign(
 							// Fonction sign de JsonWebToken//
 							{ userId: user.id }, //  données à encoder //
