@@ -1,5 +1,7 @@
 const Post = require("../models/Post");
 const Sequelize = require("sequelize");
+const User = require("../models/User");
+const Comment = require("../models/Comment");
 
 const fs = require("fs");
 
@@ -41,7 +43,7 @@ exports.findAllPosts = (req, res, next) => {
 exports.findOnePost = (req, res, next) => {
 	const id = req.params.id;
 	// Find by Using primary key
-	Post.findByPk(id)
+	Post.findByPk(id, { include: [{ User }, { Comment }] })
 		.then((data) => {
 			if (data) {
 				res.send(data).status(200);

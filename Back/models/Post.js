@@ -13,7 +13,7 @@ const Post = sequelize.define("post", {
 		type: DataTypes.STRING,
 	},
 	userId: {
-		type: DataTypes.TINYINT,
+		type: DataTypes.INTEGER,
 	},
 });
 

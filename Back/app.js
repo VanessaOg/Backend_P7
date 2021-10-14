@@ -19,9 +19,13 @@ const User = require("./models/User");
 const Post = require("./models/Post");
 const Comment = require("./models/Comment");
 
-User.hasMany(Post);
+User.hasMany(Post, {
+	onDelete: "CASCADE",
+});
 Post.belongsTo(User);
-Post.hasMany(Comment);
+Post.hasMany(Comment, {
+	onDelete: "CASCADE",
+});
 Comment.belongsTo(Post);
 
 // Testing the connection
